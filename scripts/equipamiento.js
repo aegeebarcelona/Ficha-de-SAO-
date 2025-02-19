@@ -1,4 +1,4 @@
-class equipamiento {
+export default class equipamiento {
 
     arrayTiposValidos = ['Arma', 'Ligera', 'Media', 'Pesada', 'Escudo', 'Accesorio'];
 

@@ -1,4 +1,4 @@
-class PJ {
+èxport default class PJ {
     constructor() {
         /* caracteristicas base */
         this.nombre; //String
