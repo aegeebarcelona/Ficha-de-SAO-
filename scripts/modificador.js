@@ -1,4 +1,4 @@
-class Modificador {
+export default  class Modificador {
     /**
      * 
      * @param {String} nombre 
