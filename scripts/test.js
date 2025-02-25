@@ -1,3 +1,4 @@
 import PJ from "./PJ.js";
 
-personaje = new PJ();
+let personaje = new PJ();
+personaje.guardarJSON();

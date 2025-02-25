@@ -1,7 +1,9 @@
+const FileSystem = require("fs");
+
 export default class PJ {
     constructor() {
         /* caracteristicas base */
-        this.nombre; //String
+        this.nombre="nombre"; //String
         this.nivel;
         this.experiencia;
 
@@ -49,8 +51,8 @@ export default class PJ {
 
         /* Bloques de texto */
         this.notas; /* String, como todos  */
-        this.listadoArtes;  
-        this.listaDeAmigos;  
+        this.listadoArtes;
+        this.listaDeAmigos;
         this.recetasProfesion;
         this.baul;
 
@@ -89,6 +91,12 @@ export default class PJ {
             modificaciones: this.modificaciones
         };
     }
+    guardarJSON() {
+        FileSystem.writeFile(this.nombre + '.json', JSON.stringify(proj), (error) => {
+            if (error) throw error;
+        });
+    }
+
 }
 
 
