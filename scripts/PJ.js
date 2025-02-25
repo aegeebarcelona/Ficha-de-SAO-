@@ -89,12 +89,17 @@ export default class PJ {
             modificaciones: this.modificaciones
         });
     }
+
     guardarJSON() {
         const blob = new Blob([this.toJSONString()], { type: 'application/json' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
         link.download = this.nombre + '.json';
         link.click();
+    }
+
+    cargarJSON(){
+        
     }
 
 }
