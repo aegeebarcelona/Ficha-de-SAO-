@@ -1,9 +1,8 @@
-const FileSystem = require("fs");
 
 export default class PJ {
     constructor() {
         /* caracteristicas base */
-        this.nombre="nombre"; //String
+        this.nombre = "nombre"; //String
         this.nivel;
         this.experiencia;
 
@@ -92,7 +91,7 @@ export default class PJ {
         };
     }
     guardarJSON() {
-        FileSystem.writeFile(this.nombre + '.json', JSON.stringify(proj), (error) => {
+        fs.writeFile(this.nombre + '.json', JSON.stringify(proj), (error) => {
             if (error) throw error;
         });
     }
