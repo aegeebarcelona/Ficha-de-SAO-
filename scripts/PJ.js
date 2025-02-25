@@ -56,8 +56,8 @@ export default class PJ {
 
     }
 
-    toJSON() {
-        return {
+    toJSONString() {
+        return JSON.stringify({
             nombre: this.nombre,
             nivel: this.nivel,
             experiencia: this.experiencia,
@@ -87,10 +87,10 @@ export default class PJ {
             cabeza: this.cabeza,
             pies: this.pies,
             modificaciones: this.modificaciones
-        };
+        });
     }
     guardarJSON() {
-        const blob = new Blob(JSON.stringify(this.toJSON()), { type: 'application/json' });
+        const blob = new Blob([toJSONString()], { type: 'application/json' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
         link.download = this.nombre + '.json';
