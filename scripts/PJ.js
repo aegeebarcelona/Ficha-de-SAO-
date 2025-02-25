@@ -1,4 +1,4 @@
-
+import fs
 export default class PJ {
     constructor() {
         /* caracteristicas base */
@@ -91,9 +91,11 @@ export default class PJ {
         };
     }
     guardarJSON() {
-        fs.writeFile(this.nombre + '.json', JSON.stringify(proj), (error) => {
-            if (error) throw error;
-        });
+        const blob = new Blob([this.toJSON()], { type: 'application/json' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'data.json';
+        link.click();
     }
 
 }
