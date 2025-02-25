@@ -1,4 +1,3 @@
-import fs
 export default class PJ {
     constructor() {
         /* caracteristicas base */
