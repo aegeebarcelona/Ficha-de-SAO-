@@ -1,3 +1,8 @@
+import PJ from "./PJ.js";
+
+let personaje = new PJ(); //objeto que almaacena y define el comportamiento y limites de toda la informacion relevante 
+
+/* Funcion de carga TODO TERMINAR */
 document.getElementById('fileInput').addEventListener('change', function (event) {
     const file = event.target.files[0]; // Get the selected file
 
@@ -10,16 +15,21 @@ document.getElementById('fileInput').addEventListener('change', function (event)
 
             try {
                 // Parse the JSON string into an object
-                const parsedObject = JSON.parse(jsonString);
-                console.log(parsedObject);
+                const personajeCargado = JSON.parse(jsonString);
+                console.log(personajeCargado);
                 // The object is now ready to use
             } catch (error) {
                 console.error('Error parsing JSON:', error);
             }
         };
 
-        reader.readAsText(file); // Read the file as a text string
+        personaje.cargarJSON(personajeCargado);
 
-        console.log(reader);
+
     }
+});
+
+/* Boton de guardado */
+document.getElementById('fileInput').addEventListener('click', function (event) {
+    personaje.guardarJSON();
 });
