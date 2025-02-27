@@ -72,8 +72,6 @@ export default class PJ {
         }
     }
 
-    setFortaleza
-
 
     toJSONString() {
         return JSON.stringify({
@@ -126,8 +124,8 @@ export default class PJ {
     cargarJSON(jsonObject) {
         /* Valores principales */
         this.nombre = jsonObject.nombre;
-        this.nivel = jsonObject.nivel,
-            this.experiencia = jsonObject.experiencia;
+        this.nivel = jsonObject.nivel;
+        this.experiencia = jsonObject.experiencia;
 
         /* Atributos */
         this.fortaleza = jsonObject.fortaleza;
@@ -166,7 +164,6 @@ export default class PJ {
         /* Modifciaciones */
         this.modificaciones = jsonObject.modificaciones;
 
-        
     }
 
 }

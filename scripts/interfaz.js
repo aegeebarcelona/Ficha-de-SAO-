@@ -5,31 +5,32 @@ let personaje = new PJ(); //objeto que almaacena y define el comportamiento y li
 /* Funcion de carga TODO TERMINAR */
 document.getElementById('fileInput').addEventListener('change', function (event) {
     const file = event.target.files[0]; // Get the selected file
-
-    if (file) {
-        const reader = new FileReader(); // Create a FileReader to read the file
+    if (file && file.type === 'application/json') {  // Check if the file is a JSON file
+        const reader = new FileReader();
 
         reader.onload = function (e) {
-            // When the file is read, e.target.result contains the file content
-            const jsonString = e.target.result; // Get the content of the file as a string
-
             try {
-                // Parse the JSON string into an object
-                const personajeCargado = JSON.parse(jsonString);
-                console.log(personajeCargado);
-                // The object is now ready to use
+                const jsonData = JSON.parse(e.target.result);  // Parse the JSON string into an object
+                console.log("Personaje pre carga:", personaje);
+                personaje.cargarJSON(jsonData);
+                console.log("Personaje post carga:", personaje);
+
             } catch (error) {
                 console.error('Error parsing JSON:', error);
             }
         };
 
-        personaje.cargarJSON(personajeCargado);
+        reader.onerror = function () {
+            console.error('Error reading file');
+        };
 
-
+        reader.readAsText(file);  // Read the file as a text string
+    } else {
+        alert('Please select a valid JSON file.');
     }
 });
 
 /* Boton de guardado */
-document.getElementById('fileInput').addEventListener('click', function (event) {
+document.getElementById('botonGuardar').addEventListener('click', function (event) {
     personaje.guardarJSON();
 });
