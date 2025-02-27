@@ -45,6 +45,7 @@
     "requires-port": "^1.0.0",
     "safe-buffer": "^5.1.2",
     "safer-buffer": "^2.1.2",
+    "sass": "^1.85.1",
     "secure-compare": "^3.0.1",
     "side-channel": "^1.1.0",
     "side-channel-list": "^1.0.0",
