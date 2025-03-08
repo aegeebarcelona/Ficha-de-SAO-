@@ -49,6 +49,20 @@ export default class PJ {
         this.manoIzquierda;
         this.accesorios;
 
+        this.puntosArteMax = this.puntosArteMax;
+        this.puntosArte = this.puntosArte;
+        this.espaciosArte = this.espaciosArte;
+        this.aguante = this.fortaleza + (this.voluntad / 2);
+        this.vidaMax = this.aguante * ((this.nivel / 5) + 1);
+        this.vida = this.vidaMax;
+        this.armadura = this.getModificador("armadura");
+        this.defensa = (5 + this.reflejos) + this.atletismo;
+        this.dFisico = (this.combate + this.fortaleza) / 4;
+        this.dDistancia = (this.combate) / 4;
+        this.dMagico = (this.sacro + this.inteligencia) / 4;
+        this.iniciativa = (this.reflejos + this.voluntad / 2);
+        this.vMovimiento = 3 + this.atletismo / 5;
+
         /* Bloques de texto */
         this.notas = "vacio"; /* String, como todos  */
         this.listadoArtes = "vacio";
@@ -56,10 +70,12 @@ export default class PJ {
         this.recetasProfesion = "vacio";
         this.baul = "vacio";
 
+        /* Modificadores */
+        this.modificaciones = [];
+
     }
 
     /* Setters */
-
     setExp(experiencia) {
         if (typeof (experiencia) != 'number') {
             throw TypeError("El valor de experiencia tiene que ser numerico.")
@@ -72,6 +88,21 @@ export default class PJ {
         }
     }
 
+    calcularCaracteristicas() {
+        this.puntosArteMax = this.puntosArteMax + this.getModificador("arte");
+        this.puntosArte = this.puntosArte;
+        this.espaciosArte = this.espaciosArte + this.getModificador("espacios");
+        this.aguante = this.fortaleza + (this.voluntad / 2) + this.getModificador("aguante");;
+        this.vidaMax = this.aguante * ((this.nivel / 5) + 1) + this.getModificador("vidaMax");;
+        this.vida = this.vidaMax;
+        this.armadura = this.getModificador("armadura");
+        this.defensa = (5 + this.reflejos) + this.atletismo + this.getModificador("defensa");;
+        this.dFisico = (this.getGenerico("atletismo") + this.fortaleza) / 4 + this.getModificador("dFisico");
+        this.dDistancia = (this.getGenerico("combate")) / 4 + this.getModificador("dDistancia");;
+        this.dMagico = (this.getGenerico("sacro") + this.inteligencia) / 4 + this.getModificador("dMagico");;
+        this.iniciativa = (this.reflejos + this.voluntad / 2) + this.getModificador("iniciativa");;
+        this.vMovimiento = 3 + this.getGenerico("atletismo") / 5 + this.getModificador("vMovimeinto");;
+    }
 
     toJSONString() {
         return JSON.stringify({
@@ -93,16 +124,19 @@ export default class PJ {
             profesion: this.profesion,
             sacro: this.sacro,
 
+            puntosArteMax: this.puntosArteMax,
             puntosArte: this.puntosArte,
-            vida: this.vida,
-            aguante: this.aguante,
-            armadura: this.armadura,
-            defensa: this.defensa,
-            dFisico: this.dFisico,
-            dDistancia: this.dDistancia,
-            dMagico: this.dMagico,
-            iniciativa: this.iniciativa,
-            vMovimiento: this.vMovimiento,
+            espaciosArte: this.espaciosArte,
+            aguante: this.fortaleza + (this.voluntad / 2),
+            vidaMax: this.aguante * ((this.nivel / 5) + 1),
+            vida: this.vidaMax,
+            armadura: this.getModificador("armadura"),
+            defensa: (5 + reflejos) + this.atletismo,
+            dFisico: (this.combate + this.fortaleza) / 4,
+            dDistancia: (this.combate) / 4,
+            dMagico: (this.sacro + this.inteligencia) / 4,
+            iniciativa: (this.reflejos + this.voluntad / 2),
+            vMovimiento: 3 + this.atletismo / 5,
 
             izquierda: this.izquierda,
             derecha: this.derecha,
@@ -111,6 +145,28 @@ export default class PJ {
 
             modificaciones: this.modificaciones
         });
+    }
+
+    /**
+     * Introduce el nombre del atributo a obtener y se unen automaticamente los modificadores asociados al nombre 
+     * @param {string} atributo 
+     */
+    getGenerico(atributo) {
+        return this[atributo] + this.getModificador(atributo);
+    }
+
+    /**
+     * Devuelve la suma de todos los modificadores de el atributo nombrado. 
+     * 
+     * @param {string} atributo nombre de alguno de los atributos de PJ 
+     * @returns Int de la suma
+     */
+    getModificador(atributo) {
+        /* Del array de modificadores del personaje, saca la suma de los valores enteros del nombre del atributo  */
+        return 0;
+        /*  return this.modificaciones.reduce(function (acc, obj) { 
+             return acc + ((obj['modificado']== atributo)?obj.numero:0); 
+         },0); */
     }
 
     guardarJSON() {
