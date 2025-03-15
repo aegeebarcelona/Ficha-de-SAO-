@@ -1,6 +1,7 @@
 import PJ from "./PJ.js";
 
-let personaje = new PJ(); //objeto que almaacena y define el comportamiento y limites de toda la informacion relevante 
+let personaje = new PJ(); //objeto que almaacena y define el comportamiento y limites de toda la informacion relevante
+console.log(personaje); 
 /* Informacion */
 let inputNombre = document.getElementById("nombre");
 let inputNivel = document.getElementById("nivel");
@@ -33,17 +34,17 @@ let cantDannoCac = document.getElementById("dFisico");
 let cantDannoDist = document.getElementById("dDistancia");
 let cantDannoMagic = document.getElementById("dMagico");
 
+
 let inputs = document.getElementsByTagName("input");
-/* Evento generico que introduce la variable nueva en el objeto dependiendo del id del input que lo contiene */
+/* Evento generico que introduce nuevos valores en el atributo del objeto personaje dependiendo del id del input que lo contiene */
 for (const element of inputs) {
     element.addEventListener('focusout', () => {
         personaje[element.id] = element.value;
+        personaje.calcularCaracteristicas();
+        actualizarTodo();
     })
 }
 
-function inputGenerico(nombre) {
-
-}
 
 
 function actualizarTodo() {

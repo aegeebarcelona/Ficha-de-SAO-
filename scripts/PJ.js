@@ -6,10 +6,10 @@ export default class PJ {
         this.experiencia = 0;
 
         /* Caracteristicas */
-        this.fortaleza = 1;
-        this.reflejos = 1;
-        this.voluntad = 1;
-        this.inteligencia = 1;
+        this.fortaleza = 4;
+        this.reflejos = 4;
+        this.voluntad = 4;
+        this.inteligencia = 4;
 
         /* Habilidades */
         this.atletismo = 0;
@@ -56,7 +56,7 @@ export default class PJ {
         this.vidaMax = this.aguante * ((this.nivel / 5) + 1);
         this.vida = this.vidaMax;
         this.armadura = this.getModificador("armadura");
-        this.defensa = (5 + this.reflejos) + this.atletismo;
+        this.defensa = (5);
         this.dFisico = (this.combate + this.fortaleza) / 4;
         this.dDistancia = (this.combate) / 4;
         this.dMagico = (this.sacro + this.inteligencia) / 4;
@@ -96,7 +96,7 @@ export default class PJ {
         this.vidaMax = this.aguante * ((this.nivel / 5) + 1) + this.getModificador("vidaMax");;
         this.vida = this.vidaMax;
         this.armadura = this.getModificador("armadura");
-        this.defensa = (5 + this.reflejos) + this.atletismo + this.getModificador("defensa");;
+        this.defensa = (5 + this.reflejos) + this.getGenerico("atletismo") + this.getModificador("defensa");;
         this.dFisico = (this.getGenerico("atletismo") + this.fortaleza) / 4 + this.getModificador("dFisico");
         this.dDistancia = (this.getGenerico("combate")) / 4 + this.getModificador("dDistancia");;
         this.dMagico = (this.getGenerico("sacro") + this.inteligencia) / 4 + this.getModificador("dMagico");;
@@ -105,6 +105,7 @@ export default class PJ {
     }
 
     toJSONString() {
+        this.calcularCaracteristicas();
         return JSON.stringify({
             nombre: this.nombre,
             nivel: this.nivel,
@@ -152,7 +153,8 @@ export default class PJ {
      * @param {string} atributo 
      */
     getGenerico(atributo) {
-        return this[atributo] + this.getModificador(atributo);
+        console.log(atributo + ":" + this[atributo])
+        return parseInt(this[atributo]) + parseInt(this.getModificador(atributo));
     }
 
     /**
