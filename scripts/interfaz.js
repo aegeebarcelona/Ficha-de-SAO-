@@ -5,33 +5,45 @@ let personaje = new PJ(); //objeto que almaacena y define el comportamiento y li
 let inputNombre = document.getElementById("nombre");
 let inputNivel = document.getElementById("nivel");
 let inputExperiencia = document.getElementById("experiencia");
-let inputVida = document.getElementById("vidaInp");
+let inputVida = document.getElementById("vida");
 let vidaMaxSpan = document.getElementById("vidaMax");
-let arteInp = document.getElementById("arteInp");
+let arteInp = document.getElementById("arte");
 let arteSpan = document.getElementById("arteMax");
 /* Elementos Atributos */
-let spanFortaleza = document.getElementById("cantFortaleza");
-let spanReflejos = document.getElementById("cantReflejos");
-let spanVoluntad = document.getElementById("cantVoluntad");
-let spanMente = document.getElementById("cantMente");
+let spanFortaleza = document.getElementById("fortaleza");
+let spanReflejos = document.getElementById("reflejos");
+let spanVoluntad = document.getElementById("voluntad");
+let spanMente = document.getElementById("inteligencia");
 /* Elementos habilidades */
-let atletismoInp = document.getElementById("atletismoInp")
-let combateInp = document.getElementById("combateInp")
-let percepcionInp = document.getElementById("percepcionInp")
-let sigiloInp = document.getElementById("sigiloInp")
-let carismaInp = document.getElementById("carismaInp")
-let culturaInp = document.getElementById("culturaInp")
-let profesionInp = document.getElementById("profesionInp")
-let sacroInp = document.getElementById("sacroInp")
+let atletismoInp = document.getElementById("atletismo")
+let combateInp = document.getElementById("combate")
+let percepcionInp = document.getElementById("percepcion")
+let sigiloInp = document.getElementById("subterfugio")
+let carismaInp = document.getElementById("comunicacion")
+let culturaInp = document.getElementById("cultura")
+let profesionInp = document.getElementById("profesion")
+let sacroInp = document.getElementById("sacro")
 /* Caracteristicas */
-let cantAguante = document.getElementById("cantAguante");
-let cantEntreza = document.getElementById("cantEntreza");
-let cantDefensa = document.getElementById("cantDefensa");
-let cantIniciativa = document.getElementById("cantIniciativa");
-let cantMovimiento = document.getElementById("cantMovimiento");
-let cantDannoCac = document.getElementById("cantCac");
-let cantDannoDist = document.getElementById("cantDistancia");
-let cantDannoMagic = document.getElementById("cantMagico");
+let cantAguante = document.getElementById("aguante");
+let cantEntreza = document.getElementById("entreza");
+let cantDefensa = document.getElementById("defensa");
+let cantIniciativa = document.getElementById("iniciativa");
+let cantMovimiento = document.getElementById("vMovimiento");
+let cantDannoCac = document.getElementById("dFisico");
+let cantDannoDist = document.getElementById("dDistancia");
+let cantDannoMagic = document.getElementById("dMagico");
+
+let inputs = document.getElementsByTagName("input");
+/* Evento generico que introduce la variable nueva en el objeto dependiendo del id del input que lo contiene */
+for (const element of inputs) {
+    element.addEventListener('focusout', () => {
+        personaje[element.id] = element.value;
+    })
+}
+
+function inputGenerico(nombre) {
+
+}
 
 
 function actualizarTodo() {
