@@ -89,19 +89,17 @@ export default class PJ {
     }
 
     calcularCaracteristicas() {
-        this.puntosArteMax = this.puntosArteMax + this.getModificador("arte");
-        this.puntosArte = this.puntosArte;
-        this.espaciosArte = this.espaciosArte + this.getModificador("espacios");
+        this.puntosArteMax = 3 + (this.nivel > 30 ? Math.floor((this.nivel - 16) / 15) : 0) + this.getModificador("arte");
+        this.espaciosArte = 4 + Math.floor(this.cultura / 10) + this.getModificador("espacios");
         this.aguante = this.fortaleza + (this.voluntad / 2) + this.getModificador("aguante");;
-        this.vidaMax = this.aguante * ((this.nivel / 5) + 1) + this.getModificador("vidaMax");;
-        this.vida = this.vidaMax;
+        this.vidaMax = this.aguante * (Math.floor((this.nivel - 1) / 5) + 1) + this.getModificador("vidaMax");;
         this.armadura = this.getModificador("armadura");
         this.defensa = (5 + this.reflejos) + this.getGenerico("atletismo") + this.getModificador("defensa");;
-        this.dFisico = (this.getGenerico("atletismo") + this.fortaleza) / 4 + this.getModificador("dFisico");
+        this.dFisico = (this.getGenerico("combate") + this.fortaleza) / 4 + this.getModificador("dFisico");
         this.dDistancia = (this.getGenerico("combate")) / 4 + this.getModificador("dDistancia");;
         this.dMagico = (this.getGenerico("sacro") + this.inteligencia) / 4 + this.getModificador("dMagico");;
         this.iniciativa = (this.reflejos + this.voluntad / 2) + this.getModificador("iniciativa");;
-        this.vMovimiento = 3 + this.getGenerico("atletismo") / 5 + this.getModificador("vMovimeinto");;
+        this.vMovimiento = 3 + Math.floor(this.getGenerico("atletismo") / 5) + this.getModificador("vMovimeinto");;
     }
 
     toJSONString() {
@@ -128,21 +126,28 @@ export default class PJ {
             puntosArteMax: this.puntosArteMax,
             puntosArte: this.puntosArte,
             espaciosArte: this.espaciosArte,
-            aguante: this.fortaleza + (this.voluntad / 2),
-            vidaMax: this.aguante * ((this.nivel / 5) + 1),
+            aguante: this.aguante,
+            vidaMax: this.vidaMax,
             vida: this.vidaMax,
             armadura: this.getModificador("armadura"),
-            defensa: (5 + reflejos) + this.atletismo,
-            dFisico: (this.combate + this.fortaleza) / 4,
-            dDistancia: (this.combate) / 4,
-            dMagico: (this.sacro + this.inteligencia) / 4,
-            iniciativa: (this.reflejos + this.voluntad / 2),
-            vMovimiento: 3 + this.atletismo / 5,
+            defensa: this.defensa,
+            dFisico: this.dFisico,
+            dDistancia: this.dDistancia,
+            dMagico: this.dMagico,
+            iniciativa: this.iniciativa,
+            vMovimiento: this.vMovimiento,
 
             izquierda: this.izquierda,
             derecha: this.derecha,
             cabeza: this.cabeza,
             pies: this.pies,
+
+            /* Bloques de texto */
+            notas: this.notas = "vacio",/* String, como todos  */
+            listadoArtes: this.listadoArtes = "vacio",
+            listaDeAmigos: this.listaDeAmigos = "vacio",
+            recetasProfesion : this.recetasProfesion = "vacio",
+            baul: this.baul = "vacio",
 
             modificaciones: this.modificaciones
         });
@@ -172,10 +177,11 @@ export default class PJ {
     }
 
     guardarJSON() {
+        let hoy = new Date();
         const blob = new Blob([this.toJSONString()], { type: 'application/json' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.download = this.nombre + '.json';
+        link.download = this.nombre + hoy.toLocaleDateString() + '.json';
         link.click();
     }
 
