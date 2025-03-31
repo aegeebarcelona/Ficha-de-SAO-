@@ -1,3 +1,4 @@
+import Modificador from "./modificador.js";
 export default class PJ {
     constructor() {
         /* caracteristicas base */
@@ -41,7 +42,7 @@ export default class PJ {
         this.pies = true; //Boolean
 
         /* Array de modificaciones */
-        this.modificaciones;
+        this.modificadores;
 
         /* Equipamiento */ /* Se creará una clase equipamiento? */
         this.armadura; /* Todos estos son objetos de tipo equipamiento */
@@ -55,7 +56,6 @@ export default class PJ {
         this.aguante = this.fortaleza + (this.voluntad / 2);
         this.vidaMax = this.aguante * ((this.nivel / 5) + 1);
         this.vida = this.vidaMax;
-        this.armadura = this.getModificador("armadura");
         this.defensa = (5);
         this.dFisico = (this.combate + this.fortaleza) / 4;
         this.dDistancia = (this.combate) / 4;
@@ -71,8 +71,7 @@ export default class PJ {
         this.baul = "vacio";
 
         /* Modificadores */
-        this.modificaciones = [];
-
+        this.modificadores = [new Modificador()];
     }
 
     /* Setters */
@@ -102,63 +101,13 @@ export default class PJ {
         this.vMovimiento = 3 + Math.floor(this.getGenerico("atletismo") / 5) + this.getModificador("vMovimeinto");;
     }
 
-    toJSONString() {
-        this.calcularCaracteristicas();
-        return JSON.stringify({
-            nombre: this.nombre,
-            nivel: this.nivel,
-            experiencia: this.experiencia,
 
-            fortaleza: this.fortaleza,
-            reflejos: this.reflejos,
-            voluntad: this.voluntad,
-            inteligencia: this.inteligencia,
-
-            atletismo: this.atletismo,
-            combate: this.combate,
-            percepcion: this.percepcion,
-            subterfugio: this.subterfugio,
-            comunicacion: this.comunicacion,
-            cultura: this.cultura,
-            profesion: this.profesion,
-            sacro: this.sacro,
-
-            puntosArteMax: this.puntosArteMax,
-            puntosArte: this.puntosArte,
-            espaciosArte: this.espaciosArte,
-            aguante: this.aguante,
-            vidaMax: this.vidaMax,
-            vida: this.vidaMax,
-            armadura: this.getModificador("armadura"),
-            defensa: this.defensa,
-            dFisico: this.dFisico,
-            dDistancia: this.dDistancia,
-            dMagico: this.dMagico,
-            iniciativa: this.iniciativa,
-            vMovimiento: this.vMovimiento,
-
-            izquierda: this.izquierda,
-            derecha: this.derecha,
-            cabeza: this.cabeza,
-            pies: this.pies,
-
-            /* Bloques de texto */
-            notas: this.notas = "vacio",/* String, como todos  */
-            listadoArtes: this.listadoArtes = "vacio",
-            listaDeAmigos: this.listaDeAmigos = "vacio",
-            recetasProfesion : this.recetasProfesion = "vacio",
-            baul: this.baul = "vacio",
-
-            modificaciones: this.modificaciones
-        });
-    }
 
     /**
      * Introduce el nombre del atributo a obtener y se unen automaticamente los modificadores asociados al nombre 
      * @param {string} atributo 
      */
     getGenerico(atributo) {
-        console.log(atributo + ":" + this[atributo])
         return parseInt(this[atributo]) + parseInt(this.getModificador(atributo));
     }
 
@@ -170,10 +119,9 @@ export default class PJ {
      */
     getModificador(atributo) {
         /* Del array de modificadores del personaje, saca la suma de los valores enteros del nombre del atributo  */
-        return 0;
-        /*  return this.modificaciones.reduce(function (acc, obj) { 
-             return acc + ((obj['modificado']== atributo)?obj.numero:0); 
-         },0); */
+        return this.modificadores.reduce(function (acc, obj) {
+            return acc + ((obj['modificado'] == atributo) ? obj.numero : 0);
+        }, 0);
     }
 
     guardarJSON() {
@@ -226,8 +174,69 @@ export default class PJ {
         this.pies = jsonObject.pies;
 
         /* Modifciaciones */
-        this.modificaciones = jsonObject.modificaciones;
+        this.modificadores = jsonObject.modificadores;
 
+        /* Bloques de texto */
+        this.notas = jsonObject.notas;
+        this.listadoArtes = jsonObject.listadoArtes;
+        this.listaDeAmigos = jsonObject.listaDeAmigos;
+        this.recetasProfesion = jsonObject.recetasProfesion;
+        this.baul = jsonObject.baul;
+
+    }
+
+    toJSONString() {
+        this.calcularCaracteristicas();
+        let array = [];
+        this.modificadores.forEach((mod) => {
+            array.push(new Modificador(mod.nombre, mod.modificado, mod.numero, mod.turnos))
+        })
+        return JSON.stringify({
+            nombre: this.nombre,
+            nivel: this.nivel,
+            experiencia: this.experiencia,
+
+            fortaleza: this.fortaleza,
+            reflejos: this.reflejos,
+            voluntad: this.voluntad,
+            inteligencia: this.inteligencia,
+
+            atletismo: this.atletismo,
+            combate: this.combate,
+            percepcion: this.percepcion,
+            subterfugio: this.subterfugio,
+            comunicacion: this.comunicacion,
+            cultura: this.cultura,
+            profesion: this.profesion,
+            sacro: this.sacro,
+
+            puntosArteMax: this.puntosArteMax,
+            puntosArte: this.puntosArte,
+            espaciosArte: this.espaciosArte,
+            aguante: this.aguante,
+            vidaMax: this.vidaMax,
+            vida: this.vidaMax,
+            defensa: this.defensa,
+            dFisico: this.dFisico,
+            dDistancia: this.dDistancia,
+            dMagico: this.dMagico,
+            iniciativa: this.iniciativa,
+            vMovimiento: this.vMovimiento,
+
+            izquierda: this.izquierda,
+            derecha: this.derecha,
+            cabeza: this.cabeza,
+            pies: this.pies,
+
+            /* Bloques de texto */
+            notas: this.notas,/* String, como todos  */
+            listadoArtes: this.listadoArtes,
+            listaDeAmigos: this.listaDeAmigos,
+            recetasProfesion: this.recetasProfesion,
+            baul: this.baul,
+
+            modificadores: array
+        });
     }
 
 }

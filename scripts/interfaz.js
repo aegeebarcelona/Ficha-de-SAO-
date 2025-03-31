@@ -1,7 +1,7 @@
+import Modificador from "./modificador.js";
 import PJ from "./PJ.js";
 
 let personaje = new PJ(); //objeto que almaacena y define el comportamiento y limites de toda la informacion relevante
-console.log(personaje); 
 /* Informacion */
 let inputNombre = document.getElementById("nombre");
 let inputNivel = document.getElementById("nivel");
@@ -34,7 +34,6 @@ let cantDannoCac = document.getElementById("dFisico");
 let cantDannoDist = document.getElementById("dDistancia");
 let cantDannoMagic = document.getElementById("dMagico");
 
-
 let inputs = document.getElementsByTagName("input");
 /* Evento generico que introduce nuevos valores en el atributo del objeto personaje dependiendo del id del input que lo contiene */
 for (const element of inputs) {
@@ -45,6 +44,17 @@ for (const element of inputs) {
     })
 }
 
+/* Introduccion de datos en textareas y manejo general */
+let textareas = document.getElementsByTagName("textarea");
+for (const textarea of textareas) {
+    textarea.addEventListener('focusout', function (event) {
+        personaje[textarea.id] = event.target.value
+        console.log(personaje[textarea.id])
+    }
+    )
+
+}
+
 
 
 function actualizarTodo() {
@@ -52,6 +62,7 @@ function actualizarTodo() {
     actualizarAtributos();
     actualizarHabilidades();
     actualizarCaracteristicas();
+    actuaizarTextos();
 }
 
 function actualizarInformacion() {
@@ -82,9 +93,10 @@ function actualizarHabilidades() {
     sacroInp.value = personaje.sacro;
 }
 
-function añadirModificadores() {
-
-
+function actuaizarTextos() {
+    for (const textarea of textareas) {
+        textarea.value = personaje[textarea.id];
+    }
 }
 
 function actualizarCaracteristicas() {
@@ -108,6 +120,7 @@ document.getElementById('fileInput').addEventListener('change', function (event)
                 const jsonData = JSON.parse(e.target.result);  // Parse the JSON string into an object
                 personaje.cargarJSON(jsonData);
                 actualizarTodo();
+                parseModificadores();
 
             } catch (error) {
                 console.error('Error parsing JSON:', error);
@@ -120,7 +133,7 @@ document.getElementById('fileInput').addEventListener('change', function (event)
 
         reader.readAsText(file);  // Read the file as a text string
     } else {
-        alert('Please select a valid JSON file.');
+        alert('Elije un archivo adecuado');
     }
 });
 
@@ -128,3 +141,75 @@ document.getElementById('fileInput').addEventListener('change', function (event)
 document.getElementById('botonGuardar').addEventListener('click', function (event) {
     personaje.guardarJSON();
 });
+
+
+
+/* Modificadores */
+
+let listadoModificadores = document.getElementById("listadoModificadores")
+let botonAnnadir = document.getElementById("anadirMod");
+console.log("boton añadir", botonAnnadir)
+botonAnnadir.addEventListener('click', function () {
+    personaje.modificadores.push(new Modificador("nombre", "atletismo", 0, 0))
+    parseModificadores();
+})
+
+function parseModificadores() {
+    listadoModificadores.innerHTML = "";
+    personaje.modificadores.forEach((modificador, index) => {
+        listadoModificadores.innerHTML += ` 
+                <div id="modificador${index}" class="modificador">
+                    Modificador: <input type="text" class="" value="${modificador.nombre}"> Atributo: <select class="listValores"> 
+                        <option value="atletismo">Atletismo</option>
+                        <option value="combate">Combate</option>
+                        <option value="percepcion">Percepción</option>
+                        <option value="subterfugio">Sigilo</option>
+                        <option value="comunicacion">Carisma</option>
+                        <option value="cutlura">Cultura</option>
+                        <option value="profesion">Profesion</option>
+                        <option value="sacro">Sacro</option>
+                    </select> 
+                    Cantidad:
+                    <input type="number"  class="cantidadMod" value="${modificador.numero}"/> 
+                    Duracion: <input  class="duracionMod" value="${modificador.turnos}"/>
+                    <div class="eliminarMod">-</div>
+                </div>`;
+    });
+
+    for (const modificador of document.getElementsByClassName("modificador")) {
+        let index = modificador.id.substring(11);
+        modificador.children[0].addEventListener('focusout', (evt) => {
+            personaje.modificadores[index].nombre = evt.currentTarget.value;
+            console.log(personaje.modificadores);
+        })
+        modificador.children[1].addEventListener('focusout', (evt) => {
+            personaje.modificadores[index].modificado = evt.currentTarget.value;
+            console.log(personaje.modificadores);
+        })
+        modificador.children[2].addEventListener('focusout', (evt) => {
+            personaje.modificadores[index].numero = parseInt(evt.currentTarget.value);
+            personaje.calcularCaracteristicas();
+            console.log(personaje.modificadores);
+            actualizarTodo();//cuando se cambia el numero el valor numerico ded algo puede variar.
+        })
+        modificador.children[3].addEventListener('focusout', (evt) => {
+            personaje.modificadores[index].turnos = parseInt(evt.currentTarget.value);
+            personaje.calcularCaracteristicas();
+            actualizarTodo();//puede que haya desaparecido un modificador por lo que hay que recalcular
+        })
+
+        modificador.children[4].addEventListener('click', (evt) => {
+            personaje.modificadores.splice(index, 1);
+            personaje.calcularCaracteristicas();
+            parseModificadores();
+            console.log(personaje.modificadores);
+            actualizarTodo();//cuando se cambia el numero el valor numerico ded algo puede variar.
+        })
+
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    parseModificadores();
+    actualizarTodo();
+})

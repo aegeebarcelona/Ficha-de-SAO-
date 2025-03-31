@@ -1,4 +1,4 @@
-export default  class Modificador {
+export default class Modificador {
     /**
      * 
      * @param {String} nombre 
@@ -6,11 +6,22 @@ export default  class Modificador {
      * @param {Int} numero numero a sumar o restar 
      * @param {Int} turnos turnos durante los que se aplica, en caso de ser -1 es permanente
      */
-    constructor(nombre, modificado, numero, turnos) { 
-        this.nombre =nombre;
+    constructor(nombre = 'nombre', modificado = 'atletismo', numero = 0, turnos = 0) {
+        this.nombre = nombre;
         this.modificado = modificado;
         this.numero = numero;
         this.turnos = turnos;
     }
+
+
+    toJSONString() {
+        return JSON.stringify({
+            nombre: this.nombre,
+            modificado: this.modificado,
+            numero: this.numero,
+            turnos: this.turnos,
+        })
+    }
+
 
 }
