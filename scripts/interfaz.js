@@ -1,3 +1,4 @@
+import Equipamiento from "./equipamiento.js";
 import Modificador from "./modificador.js";
 import PJ from "./PJ.js";
 
@@ -10,11 +11,13 @@ let inputVida = document.getElementById("vida");
 let vidaMaxSpan = document.getElementById("vidaMax");
 let arteInp = document.getElementById("arte");
 let arteSpan = document.getElementById("arteMax");
+
 /* Elementos Atributos */
 let spanFortaleza = document.getElementById("fortaleza");
 let spanReflejos = document.getElementById("reflejos");
 let spanVoluntad = document.getElementById("voluntad");
 let spanMente = document.getElementById("inteligencia");
+
 /* Elementos habilidades */
 let atletismoInp = document.getElementById("atletismo")
 let combateInp = document.getElementById("combate")
@@ -24,9 +27,9 @@ let carismaInp = document.getElementById("comunicacion")
 let culturaInp = document.getElementById("cultura")
 let profesionInp = document.getElementById("profesion")
 let sacroInp = document.getElementById("sacro")
+
 /* Caracteristicas */
 let cantAguante = document.getElementById("aguante");
-let cantEntreza = document.getElementById("entreza");
 let cantDefensa = document.getElementById("defensa");
 let cantIniciativa = document.getElementById("iniciativa");
 let cantMovimiento = document.getElementById("vMovimiento");
@@ -35,6 +38,7 @@ let cantDannoDist = document.getElementById("dDistancia");
 let cantDannoMagic = document.getElementById("dMagico");
 
 let inputs = document.getElementsByTagName("input");
+
 /* Evento generico que introduce nuevos valores en el atributo del objeto personaje dependiendo del id del input que lo contiene */
 for (const element of inputs) {
     element.addEventListener('focusout', () => {
@@ -52,10 +56,7 @@ for (const textarea of textareas) {
         console.log(personaje[textarea.id])
     }
     )
-
 }
-
-
 
 function actualizarTodo() {
     actualizarInformacion();
@@ -142,10 +143,18 @@ document.getElementById('botonGuardar').addEventListener('click', function (even
     personaje.guardarJSON();
 });
 
+/* Funcion */
+for (const elemento of document.getElementsByClassName("equipamiento")) {
+    personaje[elemento.classList[0]].modificadores.push(new Modificador());
 
+    let elementoModificadores = elemento.getElementsByClassName("modificadoresEquipo");
+    elemento.getElementsByTagName("button")[0].addEventListener("click", () => {
+
+
+    })
+}
 
 /* Modificadores */
-
 let listadoModificadores = document.getElementById("listadoModificadores")
 let botonAnnadir = document.getElementById("anadirMod");
 console.log("boton añadir", botonAnnadir)

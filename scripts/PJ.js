@@ -1,3 +1,4 @@
+import Equipamiento from "./equipamiento.js";
 import Modificador from "./modificador.js";
 export default class PJ {
     constructor() {
@@ -45,10 +46,10 @@ export default class PJ {
         this.modificadores;
 
         /* Equipamiento */ /* Se creará una clase equipamiento? */
-        this.armadura; /* Todos estos son objetos de tipo equipamiento */
-        this.manoDerecha;
-        this.manoIzquierda;
-        this.accesorios;
+        this.equipoArmadura = new Equipamiento("Armadura base", "Descripcion base base", "Pesada"); /* Todos estos son objetos de tipo equipamiento */
+        this.manoDerecha = new Equipamiento("Mano derecha", "", "Arma");;
+        this.manoIzquierda = new Equipamiento("Mano izquierda", "", "Arma");;
+        this.accesorios = [new Equipamiento("Accesorio", "", "Arma")];
 
         this.puntosArteMax = this.puntosArteMax;
         this.puntosArte = this.puntosArte;
@@ -98,10 +99,8 @@ export default class PJ {
         this.dDistancia = (this.getGenerico("combate")) / 4 + this.getModificador("dDistancia");;
         this.dMagico = (this.getGenerico("sacro") + this.inteligencia) / 4 + this.getModificador("dMagico");;
         this.iniciativa = (this.reflejos + this.voluntad / 2) + this.getModificador("iniciativa");;
-        this.vMovimiento = 3 + Math.floor(this.getGenerico("atletismo") / 5) + this.getModificador("vMovimeinto");;
+        this.vMovimiento = 3 + Math.floor(this.getGenerico("atletismo") / 5) + this.getModificador("vMovimiento");;
     }
-
-
 
     /**
      * Introduce el nombre del atributo a obtener y se unen automaticamente los modificadores asociados al nombre 
@@ -118,10 +117,31 @@ export default class PJ {
      * @returns Int de la suma
      */
     getModificador(atributo) {
+        let acumulado = 0;
         /* Del array de modificadores del personaje, saca la suma de los valores enteros del nombre del atributo  */
-        return this.modificadores.reduce(function (acc, obj) {
+        acumulado += Number( this.modificadores.reduce(function (acc, obj) {
             return acc + ((obj['modificado'] == atributo) ? obj.numero : 0);
-        }, 0);
+        }, 0));
+
+        /* Saca los modificadores del equipamiento */
+        acumulado += Number(this.manoDerecha.modificadores.reduce(function (acc, obj) {
+            return acc + ((obj['modificado'] == atributo) ? obj.numero : 0);
+        }, 0));
+        acumulado += Number(this.manoIzquierda.modificadores.reduce(function (acc, obj) {
+            return acc + ((obj['modificado'] == atributo) ? obj.numero : 0);
+        }, 0));
+        acumulado += Number(this.equipoArmadura.modificadores.reduce(function (acc, obj) {
+            return acc + ((obj['modificado'] == atributo) ? obj.numero : 0);
+        }, 0));
+
+        this.accesorios.forEach(accesorio => {
+            acumulado +=Number( accesorio.modificadores.reduce(function (acc, obj) {
+                return acc + ((obj['modificado'] == atributo) ? obj.numero : 0);
+            }, 0));
+        });
+
+        return acumulado;
+
     }
 
     guardarJSON() {
@@ -187,10 +207,12 @@ export default class PJ {
 
     toJSONString() {
         this.calcularCaracteristicas();
-        let array = [];
+        let arrayMod = [];
         this.modificadores.forEach((mod) => {
-            array.push(new Modificador(mod.nombre, mod.modificado, mod.numero, mod.turnos))
+            arrayMod.push(new Modificador(mod.nombre, mod.modificado, mod.numero, mod.turnos))
         })
+
+
         return JSON.stringify({
             nombre: this.nombre,
             nivel: this.nivel,
@@ -228,6 +250,12 @@ export default class PJ {
             cabeza: this.cabeza,
             pies: this.pies,
 
+            /* Equipo */
+            equipoArmadura: this.equipoArmadura,
+            manoDerecha: this.manoDerecha,
+            manoIzquierda: this.manoIzquierda,
+            accesorios: this.accesorios,
+
             /* Bloques de texto */
             notas: this.notas,/* String, como todos  */
             listadoArtes: this.listadoArtes,
@@ -235,7 +263,7 @@ export default class PJ {
             recetasProfesion: this.recetasProfesion,
             baul: this.baul,
 
-            modificadores: array
+            modificadores: this.modificadores
         });
     }
 
