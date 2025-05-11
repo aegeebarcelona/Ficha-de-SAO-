@@ -45,18 +45,37 @@
   margin-bottom: 15px;
 }
 
-#listadoModificadores .modificador {
+.modificador,
+.modificadorE {
   display: flex;
   margin-bottom: 10px;
   gap: 5px;
 }
 
-#listadoModificadores .modificador .cantidadMod {
+.modificador .cantidadMod,
+.modificadorE .cantidadMod {
   width: 35px;
   text-align: center;
 }
 
-#listadoModificadores .modificador .duracionMod {
+.modificador .duracionMod,
+.modificadorE .duracionMod {
+  width: 25px;
+  text-align: center;
+}
+
+.equipamiento .modificador {
+  display: flex;
+  margin-bottom: 10px;
+  gap: 5px;
+}
+
+.equipamiento .modificador .cantidadMod {
+  width: 35px;
+  text-align: center;
+}
+
+.equipamiento .modificador .duracionMod {
   width: 25px;
   text-align: center;
 }

@@ -11,7 +11,7 @@ export default class Equipamiento {
     constructor(nombre, descripcion, tipo) {
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.modificadores = [new Modificador("Mod Base", "atletismo", "0", "-1")];
+        this.modificadores = [new Modificador("Mod Base", "atletismo", "0", -1)];
         this.tipo = this.setTipo(tipo);
     }
 

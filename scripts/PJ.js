@@ -119,7 +119,7 @@ export default class PJ {
     getModificador(atributo) {
         let acumulado = 0;
         /* Del array de modificadores del personaje, saca la suma de los valores enteros del nombre del atributo  */
-        acumulado += Number( this.modificadores.reduce(function (acc, obj) {
+        acumulado += Number(this.modificadores.reduce(function (acc, obj) {
             return acc + ((obj['modificado'] == atributo) ? obj.numero : 0);
         }, 0));
 
@@ -135,7 +135,7 @@ export default class PJ {
         }, 0));
 
         this.accesorios.forEach(accesorio => {
-            acumulado +=Number( accesorio.modificadores.reduce(function (acc, obj) {
+            acumulado += Number(accesorio.modificadores.reduce(function (acc, obj) {
                 return acc + ((obj['modificado'] == atributo) ? obj.numero : 0);
             }, 0));
         });
@@ -193,6 +193,12 @@ export default class PJ {
         this.cabeza = jsonObject.cabeza;
         this.pies = jsonObject.pies;
 
+        /* Equipo */
+        this.equipoArmadura = jsonObject.equipoArmadura;
+        this.manoDerecha = jsonObject.manoDerecha;
+        this.manoIzquierda = jsonObject.manoIzquierda;
+        this.accesorios = jsonObject.accesorios;
+
         /* Modifciaciones */
         this.modificadores = jsonObject.modificadores;
 
@@ -202,7 +208,7 @@ export default class PJ {
         this.listaDeAmigos = jsonObject.listaDeAmigos;
         this.recetasProfesion = jsonObject.recetasProfesion;
         this.baul = jsonObject.baul;
-
+        console.log("personaje", this)
     }
 
     toJSONString() {

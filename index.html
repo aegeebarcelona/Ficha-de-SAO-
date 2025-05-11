@@ -115,6 +115,7 @@
                 <div id="caracteristicasDiv">
                     <div>Aguante: <span id="aguante"></span> </div>
                     <div>Defensa: <span id="defensa"></span> </div>
+                    <div>Armadura: <span id="armadura"></span> </div>
                     <div>Iniciativa: <span id="iniciativa"></span> </div>
                     <div>Movimiento: <span id="vMovimiento"></span> </div>
                     <div>Daño CaC: <span id="dFisico"></span> </div>
@@ -153,41 +154,25 @@
                 </div>
 
 
-                <div id="equipamiento">
+                <div id="divEquipamiento">
                     <h2>Equipamiento</h2>
 
                     <div class="manoDerecha equipamiento"> Mano derecha: <input type="text" placeholder="Nombre">
-                        <select id="tipoTirada">
+                        <select class="tipoTirada">
                             <option value="alta">Alta</option>
                             <option value="media">Media</option>
                             <option value="baja">Baja</option>
                             <option value="ninguna">Ninguna</option>
                         </select>
                         <button>+</button>
-                    </div>
+                        <ul class="modificadoresEquipo">
 
-                    <!-- <div>
-                        <div class="modificadorEquipo">
-                            Modificador: <input type="text" class=""> Atributo:
-                            <select class="listValores">
-                                <option value="atletismo">Atletismo</option>
-                                <option value="combate">Combate</option>
-                                <option value="percepcion">Percepción</option>
-                                <option value="subterfugio">Sigilo</option>
-                                <option value="comunicacion">Carisma</option>
-                                <option value="cutlura">Cultura</option>
-                                <option value="profesion">Profesion</option>
-                                <option value="sacro">Sacro</option>
-                            </select>
-                            Cantidad:
-                            <input type="number" value="0" class="cantidadMod">
-                            <button class="eliminarMod">-</button>
-                        </div>
+                        </ul>
+
                     </div>
- -->
 
                     <div class="manoIzquierda equipamiento"> Mano izquierda: <input type="text" placeholder="Nombre">
-                        <select id="tipoTirada">
+                        <select class="tipoTirada">
                             <option value="alta">Alta</option>
                             <option value="media">Media</option>
                             <option value="baja">Baja</option>
@@ -195,28 +180,43 @@
                         </select>
                         <button>+</button>
 
-                        <div class="modificadoresEquipo">
+                        <ul class="modificadoresEquipo">
 
-                        </div>
+                        </ul>
 
                     </div>
 
-                    <label>
-                        Armadura: <input type="text" placeholder="Nombre"> <select id="tipoarmadura">
-                            <option value="pesada">Pesada</option>
+                    <div class="equipoArmadura equipamiento"> Armadura: <input type="text" placeholder="Nombre">
+                        <select class="tipoArmadura">
+                            <option value="alta">Pesada</option>
                             <option value="media">Media</option>
-                            <option value="ligera">Ligera</option>
-                            <option value="real">Real</option>
+                            <option value="baja">Ligera</option>
+                            <option value="ninguna">Ropa</option>
+                            <option value="ninguna">Real</option>
                         </select>
-                        <div id="">+</div>
-                        <div>
-                            Modificador: <input type="text" class=""> Atributo: <select class="listValores"></select>
-                            Cantidad:
-                            <input type="number" value="0" class="cantidadMod">
-                            <div class="eliminarMod">-</div>
-                        </div>
+                        <button>+</button>
 
-                    </label>
+                        <ul class="modificadoresEquipo">
+
+                        </ul>
+
+                    </div>
+
+                    <div class="accesorio"> Armadura: <input type="text" placeholder="Nombre">
+                        <select class="tipoArmadura">
+                            <option value="alta">Pesada</option>
+                            <option value="media">Media</option>
+                            <option value="baja">Ligera</option>
+                            <option value="ninguna">Ropa</option>
+                            <option value="ninguna">Real</option>
+                        </select>
+                        <button>+</button>
+
+                        <ul class="modificadoresEquipo">
+
+                        </ul>
+
+                    </div>
 
                     <label id="accesorios">
                         Accesorios:
@@ -230,7 +230,7 @@
                                 <div class="eliminarMod">-</div>
                             </div>
                         </div>
-                    </label>
+                    </label>x
                 </div>
 
 

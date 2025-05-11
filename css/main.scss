@@ -53,7 +53,25 @@
     }
 }
 
-#listadoModificadores {
+.modificador,
+.modificadorE {
+    display: flex;
+    margin-bottom: 10px;
+    gap: 5px;
+
+    .cantidadMod {
+        width: 35px;
+        text-align: center;
+    }
+
+    .duracionMod {
+        width: 25px;
+        text-align: center;
+    }
+}
+
+
+.equipamiento {
     .modificador {
         display: flex;
         margin-bottom: 10px;
@@ -70,7 +88,6 @@
         }
     }
 }
-
 
 /* Tiradas */
 

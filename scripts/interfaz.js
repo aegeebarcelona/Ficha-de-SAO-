@@ -64,6 +64,8 @@ function actualizarTodo() {
     actualizarHabilidades();
     actualizarCaracteristicas();
     actuaizarTextos();
+    parseModificadores();
+    parseModificadoresEquipo();
 }
 
 function actualizarInformacion() {
@@ -110,7 +112,7 @@ function actualizarCaracteristicas() {
     cantDannoMagic.innerHTML = personaje.dMagico;
 }
 
-/* Funcion de carga TODO TERMINAR */
+/* Funcion de carga */
 document.getElementById('fileInput').addEventListener('change', function (event) {
     const file = event.target.files[0]; // Get the selected file
     if (file && file.type === 'application/json') {  // Check if the file is a JSON file
@@ -121,7 +123,6 @@ document.getElementById('fileInput').addEventListener('change', function (event)
                 const jsonData = JSON.parse(e.target.result);  // Parse the JSON string into an object
                 personaje.cargarJSON(jsonData);
                 actualizarTodo();
-                parseModificadores();
 
             } catch (error) {
                 console.error('Error parsing JSON:', error);
@@ -143,25 +144,17 @@ document.getElementById('botonGuardar').addEventListener('click', function (even
     personaje.guardarJSON();
 });
 
-/* Funcion */
-for (const elemento of document.getElementsByClassName("equipamiento")) {
-    personaje[elemento.classList[0]].modificadores.push(new Modificador());
 
-    let elementoModificadores = elemento.getElementsByClassName("modificadoresEquipo");
-    elemento.getElementsByTagName("button")[0].addEventListener("click", () => {
-
-
-    })
-}
 
 /* Modificadores */
 let listadoModificadores = document.getElementById("listadoModificadores")
 let botonAnnadir = document.getElementById("anadirMod");
-console.log("boton añadir", botonAnnadir)
+console.log("boton añadir", botonAnnadir);
+
 botonAnnadir.addEventListener('click', function () {
     personaje.modificadores.push(new Modificador("nombre", "atletismo", 0, 0))
     parseModificadores();
-})
+});
 
 function parseModificadores() {
     listadoModificadores.innerHTML = "";
@@ -177,6 +170,9 @@ function parseModificadores() {
                         <option value="cutlura">Cultura</option>
                         <option value="profesion">Profesion</option>
                         <option value="sacro">Sacro</option>
+                        <option value="armadura">Armadura</option>
+                        <option value="">Regeneracion</option>
+
                     </select> 
                     Cantidad:
                     <input type="number"  class="cantidadMod" value="${modificador.numero}"/> 
@@ -185,8 +181,64 @@ function parseModificadores() {
                 </div>`;
     });
 
+    /* Se añaden funcionalidad a los elementos TODO : hacer que el evento se lanze en los contenedores de modificadores y que haga bubbling para ver si esta donde debe  */
+    añadirFuncionalidadElementoModificador();
+
+}
+
+/* Equipo ___________________________________________________________________________________ */
+function parseModificadoresEquipo() {
+    for (const elemento of document.getElementsByClassName("equipamiento")) {
+        /* Resetean valores internos del listado de modificadores  */
+        let listaModsEquipo = elemento.getElementsByClassName("modificadoresEquipo")[0];
+        listaModsEquipo.innerHTML = "";
+        personaje[elemento.classList[0]].modificadores.forEach((modificador, index) => {
+            listaModsEquipo.innerHTML += ` 
+            <li id="modificadorE${index}" class="modificadorE">
+              <input type="text" class="" style="display:none" value="${modificador.nombre}"> Atributo: <select class="listValores"> 
+                    <option value="atletismo">Atletismo</option>
+                    <option value="combate">Combate</option>
+                    <option value="percepcion">Percepción</option>
+                    <option value="subterfugio">Sigilo</option>
+                    <option value="comunicacion">Carisma</option>
+                    <option value="cutlura">Cultura</option>
+                    <option value="profesion">Profesion</option>
+                    <option value="sacro">Sacro</option>
+                    <option value="armadura">Armadura</option>
+                </select> 
+                Cantidad:<input type="number"  class="cantidadMod" value="${modificador.numero}"/> 
+                <input style="display:none" class="duracionMod" value="${modificador.turnos}"/>
+                <div class="eliminarMod">-</div>
+            </li>`;
+        });
+
+    }
+
+    /* Se añaden funcionalidad a los elementos TODO : hacer que el evento se lanze en los contenedores de modificadores y que haga bubbling para ver si esta donde debe  */
+    añadirFuncionalidadEquipoModificador();
+}
+
+/* Funcion que añade funcionalidad de */
+for (const elemento of document.getElementsByClassName("equipamiento")) {
+
+    let elementoModificadores = elemento.getElementsByClassName("modificadoresEquipo");
+    /* array.forEach(element => {
+        
+    }); */
+    elemento.getElementsByTagName("button")[0].addEventListener("click", () => {
+        personaje[elemento.classList[0]].modificadores.push(new Modificador("nombre", "atletismo", 0, -1));
+        console.log(personaje[elemento.classList[0]]);
+        parseModificadoresEquipo();
+    })
+}
+
+
+
+/* Se llama cada vez que se añade un modificador */
+function añadirFuncionalidadElementoModificador() {
     for (const modificador of document.getElementsByClassName("modificador")) {
         let index = modificador.id.substring(11);
+
         modificador.children[0].addEventListener('focusout', (evt) => {
             personaje.modificadores[index].nombre = evt.currentTarget.value;
             console.log(personaje.modificadores);
@@ -209,10 +261,45 @@ function parseModificadores() {
 
         modificador.children[4].addEventListener('click', (evt) => {
             personaje.modificadores.splice(index, 1);
-            personaje.calcularCaracteristicas();
             parseModificadores();
+            personaje.calcularCaracteristicas();
+            actualizarTodo();//cuando se cambia el numero el valor numerico ded algo puede variar.
+
+        })
+
+    }
+}
+
+function añadirFuncionalidadEquipoModificador() {
+    for (const modificador of document.getElementsByClassName("modificadorE")) {
+        let index = Number(modificador.id.substring(12));
+        let tipoEquipo = modificador.parentElement.parentElement.classList[0];
+        modificador.children[0].addEventListener('focusout', (evt) => {
+            personaje[tipoEquipo].modificadores[index].nombre = evt.currentTarget.value;
+            console.log(personaje.modificadores);
+        })
+        modificador.children[1].addEventListener('focusout', (evt) => {
+            personaje[tipoEquipo].modificadores[index].modificado = evt.currentTarget.value;
+            console.log(personaje.modificadores);
+        })
+        modificador.children[2].addEventListener('focusout', (evt) => {
+            personaje[tipoEquipo].modificadores[index].numero = parseInt(evt.currentTarget.value);
+            personaje.calcularCaracteristicas();
             console.log(personaje.modificadores);
             actualizarTodo();//cuando se cambia el numero el valor numerico ded algo puede variar.
+        })
+        modificador.children[3].addEventListener('focusout', (evt) => {
+            personaje[tipoEquipo].modificadores[index].turnos = parseInt(evt.currentTarget.value);
+            personaje.calcularCaracteristicas();
+            actualizarTodo();//puede que haya desaparecido un modificador por lo que hay que recalcular
+        })
+
+        modificador.children[4].addEventListener('click', (evt) => {
+            personaje[tipoEquipo].modificadores.splice(index, 1);
+            parseModificadoresEquipo();
+            personaje.calcularCaracteristicas();
+            actualizarTodo();//cuando se cambia el numero el valor numerico ded algo puede variar.
+
         })
 
     }
@@ -220,5 +307,7 @@ function parseModificadores() {
 
 document.addEventListener("DOMContentLoaded", () => {
     parseModificadores();
+    parseModificadoresEquipo();
     actualizarTodo();
+
 })
