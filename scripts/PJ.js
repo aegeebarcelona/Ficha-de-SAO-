@@ -49,7 +49,7 @@ export default class PJ {
         this.equipoArmadura = new Equipamiento("Armadura base", "Descripcion base base", "Pesada"); /* Todos estos son objetos de tipo equipamiento */
         this.manoDerecha = new Equipamiento("Mano derecha", "", "Arma");;
         this.manoIzquierda = new Equipamiento("Mano izquierda", "", "Arma");;
-        this.accesorios = [new Equipamiento("Accesorio", "", "Arma")];
+        this.accesorios = [new Equipamiento("Accesorio", "", "Accesorio"), new Equipamiento("Accesorio", "", "Accesorio"), new Equipamiento("Accesorio", "", "Accesorio")];
 
         this.puntosArteMax = this.puntosArteMax;
         this.puntosArte = this.puntosArte;
